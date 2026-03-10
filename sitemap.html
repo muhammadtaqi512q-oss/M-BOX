@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="QynN1RmMpFejrPWhnat0MGY-ei2F5WfldEU3zP1rXvM" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>MUHAMMAD TAQI | AI & Game Engine Architect</title>
+    <meta name="description" content="Founder of MT-AI Ecosystem. Explore 1000+ games, 3D engines, and professional AI tools. Built by Muhammad Taqi.">
+    <meta name="google-site-verification" content="PMoR4Hsf1SVtUtcoxIb2JnbJM9e4ra6c2xZ8GsanLfY" />
+    
+    <link rel="canonical" href="https://muhammadtaqi512q-oss.github.io/mt-ai/">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "MT-AI Ecosystem",
+          "url": "https://muhammadtaqi512q-oss.github.io/mt-ai/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://muhammadtaqi512q-oss.github.io/mt-ai/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Muhammad Taqi",
+          "jobTitle": "AI & Web Developer",
+          "url": "https://muhammadtaqi512q-oss.github.io/mt-ai/",
+          "knowsAbout": ["Artificial Intelligence", "Game Development", "Three.js", "Web Development", "C#", "Python"]
+        }
+      ]
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --navy: #0a192f;
+            --navy-light: #112240;
+            --gold: #d4af37;
+            --neon: #64ffda;
+            --white: #e6f1ff;
+            --gray: #8892b0;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background: var(--navy);
+            color: var(--white);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            background-image: radial-gradient(circle at 50% 50%, #112240 0%, #0a192f 100%);
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, var(--gold), #f1d592);
+            color: var(--navy);
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .cv-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--navy-light);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.1);
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--gold);
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin: 0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .tagline {
+            color: var(--neon);
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            color: var(--gold);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin: 40px 0 20px 0;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, rgba(212, 175, 55, 0.3), transparent);
+            margin-left: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(100, 255, 218, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: var(--neon);
+            background: rgba(100, 255, 218, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .card b {
+            color: var(--neon);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .card span {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .badge {
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            align-self: flex-start;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .skills-p {
+            line-height: 1.8;
+            background: rgba(0,0,0,0.2);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="download-btn" onclick="generatePDF()">Download Master Portfolio (PDF)</button>
+
+    <div class="cv-container" id="cv-content">
+        <header>
+            <h1>MUHAMMAD TAQI</h1>
+            <div class="tagline">AI & WEB DEVELOPIN Architect</div>
+            <p style="color: var(--gray);">Founder of MT-AI Ecosystem | Global Developer</p>
+        </header>
+
+        <div class="section-title">🤖 AI Systems & Central Hubs</div>
+        <div class="grid">
+            <a href="https://mt-ai.oneapp.dev/" class="card" target="_blank">
+                <span class="badge">CENTRAL HUB</span>
+                <b>MT-AI Official Portal</b>
+                <span>The centralized dashboard managing over 35+ web tools.</span>
+            </a>
+            <a href="https://mt-webs.oneapp.dev/" class="card" target="_blank">
+                <span class="badge">ECOSYSTEM</span>
+                <b>MY ALL WEBS</b>
+                <span>A complete repository of all professional web projects.</span>
+            </a>
+        </div>
+
+        <div class="section-title">🕹️ Flagship Gaming & 3D Engines</div>
+        <div class="grid">
+            <a href="https://ak111222.oneapp.dev/" class="card" target="_blank">
+                <span class="badge">Arcade</span>
+                <b>1000+ Games Collection</b>
+                <span>Massive interactive library developed with C#, JS, and Python.</span>
+            </a>
+            <a href="https://build-your-subway.oneapp.dev/" class="card" target="_blank">
+                <span class="badge">3D Graphics</span>
+                <b>3D Subway Runner Engine</b>
+                <span>Three.js powered infinite runner engine with custom rendering.</span>
+            </a>
+            <a href="https://build-your-ff.oneapp.dev/" class="card" target="_blank">
+                <span class="badge">Battle Engine</span>
+                <b>Build-Your-FF</b>
+                <span>Advanced 2D Battle Royale game creator with code export.</span>
+            </a>
+        </div>
+
+        <div class="section-title">🌐 Web Builders & No-Code Studios</div>
+        <div class="grid">
+            <a href="https://web-hoster-b.oneapp.dev/" class="card" target="_blank">
+                <b>Web-Hoster-B</b>
+                <span>Universal No-Code Website builder and free hosting management.</span>
+            </a>
+            <a href="https://build-your-game.oneapp.dev/" class="card" target="_blank">
+                <b>Quiz Game Builder</b>
+                <span>Logic-heavy EdTech tool for interactive educational games.</span>
+            </a>
+        </div>
+
+        <div class="section-title">🛠️ Technical Stack</div>
+        <div class="skills-p">
+            <b style="color: var(--gold)">Languages:</b> C#, C++, Python, JavaScript (ES6+), C, HTML5, CSS3.<br>
+            <b style="color: var(--gold)">Advanced:</b> Three.js, AI Integration, Tesseract.js OCR, API Architectures.<br>
+            <b style="color: var(--gold)">Specialization:</b> Glassmorphism Design, Physics Engines, Neural Integration.
+        </div>
+
+        <footer>
+            © 2026 MUHAMMAD TAQI AI SYSTEMS | AI & WEB DEVELOPIN
+        </footer>
+    </div>
+
+    <script>
+        function generatePDF() {
+            const element = document.getElementById('cv-content');
+            const opt = {
+                margin: 5,
+                filename: 'Muhammad_Taqi_Ultimate_Portfolio.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
