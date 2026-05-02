@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>OrbitCraft AI · Website Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0f172a; }
+        .block { position: relative; width: 100%; padding: 48px 10%; margin-bottom: 24px; background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border-radius: 2rem; border: 1px solid rgba(59,130,246,0.2); transition: all 0.3s; }
+        .block:hover { background: rgba(255,255,255,0.85); border-color: #60a5fa; transform: translateY(-3px); }
+        .controls { display: none; position: absolute; right: 16px; top: 12px; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-radius: 48px; padding: 5px 14px; gap: 12px; z-index: 120; }
+        .block:hover .controls { display: flex; }
+        .controls button { background: none; border: none; color: #e2e8f0; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+        .controls button:hover { background: rgba(59,130,246,0.6); color: white; }
+        .overlay { background: rgba(248,250,252,0.5); backdrop-filter: blur(2px); min-height: 100%; padding: 2rem 0; }
+        .glass-sidebar { background: rgba(255,255,255,0.96); backdrop-filter: blur(20px); border-right: 1px solid rgba(59,130,246,0.2); }
+        .main-editor.preview-mobile { flex: none; max-width: 420px; margin: 28px auto; border-radius: 48px; box-shadow: 0 30px 40px -18px rgba(0,0,0,0.4), 0 0 0 8px #f8fafc, 0 0 0 12px #93c5fd; background: white; }
+        [contenteditable="true"]:focus { outline: none; background: rgba(59,130,246,0.08); border-radius: 24px; padding: 0.2rem 1rem; box-shadow: inset 0 0 0 2px #3b82f6; }
+        .project-card { background: white; border-radius: 1.5rem; padding: 1rem; transition: all 0.2s; border: 1px solid #e2e8f0; }
+        .project-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1); border-color: #3b82f6; }
+        .bg-thumb { transition: 0.2s; border-radius: 1rem; border: 2px solid transparent; cursor: pointer; height: 48px; background-size: cover; }
+        .bg-thumb:hover { transform: scale(1.05); border-color: #3b82f6; }
+        .tips-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border-radius: 2rem; border: 1px solid rgba(255,255,255,0.2); }
+        .code-badge { background: #1e293b; color: #e2e8f0; padding: 2px 8px; border-radius: 20px; font-family: monospace; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+<!-- ==================== HOMEPAGE (PROJECT DASHBOARD + AI TIPS) ==================== -->
+<div id="homepage" class="min-h-screen bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-6 md:p-10">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center flex-wrap gap-4 mb-10">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-2 shadow-lg">
+                        <span class="material-icons text-white text-3xl">auto_awesome</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-black bg-gradient-to-r from-blue-300 to-indigo-300 bg-clip-text text-transparent">OrbitCraft</h1>
+                </div>
+                <p class="text-gray-300 mt-2">Your websites, saved & synced · Created by <span class="font-bold text-white">Muhammad Taqi</span></p>
+            </div>
+            <button id="homeNewProjectBtn" class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition flex items-center gap-2"><span class="material-icons">add</span> New Website</button>
+        </div>
+
+        <!-- ========== AI TIPS BLOCK (Homepage) ========== -->
+        <div class="tips-card p-6 mb-12 border border-white/20 shadow-2xl">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="material-icons text-3xl text-blue-300">lightbulb</span>
+                <h2 class="text-2xl font-bold">🤖 AI Command Tips</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 text-gray-200 text-sm">
+                <div>
+                    <p class="font-semibold text-white mb-2">📝 How it works</p>
+                    <p>Type commands in the AI Block (inside the builder), one per line. Each command starts with a keyword followed by <span class="code-badge">:</span> or <span class="code-badge">;</span> and the value. The AI reads your commands and adds matching blocks.</p>
+                    <p class="font-semibold text-white mt-3">🔤 Case‑insensitive & flexible separators</p>
+                    <p>Keywords work in uppercase, lowercase, or mixed case. Use <span class="code-badge">:</span> or <span class="code-badge">;</span> as separator.</p>
+                    <div class="bg-black/30 p-2 rounded-lg mt-2 font-mono text-xs">title: MT king<br>TITLE; MT king<br>text: I am very sad</div>
+                </div>
+                <div>
+                    <p class="font-semibold text-white mb-2">🅰️ Heading / Title</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">title: Welcome<br>heading: My Site<br>hero: I am very sad</div>
+                    <p class="font-semibold text-white mt-3">📃 Text / Paragraph</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">text: Hello world<br>paragraph: This is my story</div>
+                    <p class="font-semibold text-white mt-3">🔘 Button (name + link)</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">button; name; Hello World; link; deepseek<br>button: Click Me | https://google.com<br>Shortcuts: deepseek, chatgpt, google, youtube, github, etc.</div>
+                </div>
+                <div>
+                    <p class="font-semibold text-white mb-2">🎨 Background</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">background: image | https://example.com/photo.jpg<br>background: navy<br>background: mint<br>background: color | #ff5500</div>
+                    <p class="font-semibold text-white mt-3">⚡ Action commands</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">download     → exports HTML file<br>preview      → opens live preview popup<br>live url     → generates shareable link</div>
+                </div>
+                <div>
+                    <p class="font-semibold text-white mb-2">🪄 Multiple commands on one line</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">title; MT king text; mt king<br>button; name; abc; link; chatgpt download</div>
+                    <p class="font-semibold text-white mt-3">🚀 Full example</p>
+                    <div class="bg-black/30 p-2 rounded-lg font-mono text-xs">title: I am very sad<br>button; name; Hello World; link; deepseek<br>background: image<br>download</div>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-blue-200 text-xs">✨ Try these commands inside any website project → open a site and click "AI BUILDER" ✨</div>
+        </div>
+
+        <h2 class="text-2xl font-semibold mb-5 flex items-center gap-2"><span class="material-icons">folder_open</span> Your Websites</h2>
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+</div>
+
+<!-- ==================== BUILDER APP (hidden initially) ==================== -->
+<div id="builderApp" style="display: none;">
+<div class="flex min-h-screen">
+    <!-- LEFT SIDEBAR -->
+    <aside class="glass-sidebar w-[320px] flex-shrink-0 flex flex-col h-screen sticky top-0 overflow-y-auto z-50">
+        <div class="p-6 border-b border-blue-200/50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <button id="backToHomeBtn" class="text-gray-600 hover:text-blue-600 transition"><span class="material-icons">arrow_back</span></button>
+                <span class="text-xl font-black bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">Builder</span>
+            </div>
+            <button id="globalSaveBtn" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1.5 rounded-full font-bold flex items-center gap-1"><span class="material-icons text-sm">save</span> Save</button>
+        </div>
+        <div class="p-5 flex-1 overflow-y-auto space-y-6">
+            <div class="flex gap-3">
+                <button id="undoBtn" class="flex-1 py-2 rounded-xl bg-white/80 border text-sm font-semibold flex items-center justify-center gap-1"><span class="material-icons text-base">undo</span> Undo</button>
+                <button id="redoBtn" class="flex-1 py-2 rounded-xl bg-white/80 border text-sm font-semibold flex items-center justify-center gap-1"><span class="material-icons text-base">redo</span> Redo</button>
+            </div>
+
+            <!-- AI BUILDER (Enhanced) -->
+            <div class="border-t border-blue-200/40 pt-4">
+                <p class="text-[10px] font-bold text-purple-600 uppercase">🤖 AI COMMAND ( : or ; )</p>
+                <textarea id="aiPromptInput" rows="4" class="w-full p-3 rounded-xl bg-white/90 border text-sm font-mono" placeholder="title: My Awesome Page&#10;text: Hello world&#10;button; name; Click Me; link; deepseek&#10;background: navy&#10;download"></textarea>
+                <button id="aiGenerateBtn" class="w-full mt-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-2 rounded-xl font-bold">✨ Generate & Execute</button>
+                <p class="text-[10px] text-gray-500 mt-1 text-center">Supports multi‑line & multi‑command per line</p>
+            </div>
+
+            <!-- COMPONENTS -->
+            <div><p class="text-[10px] font-bold text-blue-600">📦 COMPONENTS</p>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <button onclick="addHeroCard()" class="p-2 bg-white/60 rounded-xl border text-left text-xs">🚀 Hero Card</button>
+                <button onclick="addImageBlock()" class="p-2 bg-white/60 rounded-xl border text-left text-xs">🖼️ Image+Text</button>
+                <button onclick="addTestimonial()" class="p-2 bg-white/60 rounded-xl border text-left text-xs">💬 Testimonial</button>
+                <button onclick="addStatsRow()" class="p-2 bg-white/60 rounded-xl border text-left text-xs">📊 Stats Row</button>
+            </div></div>
+
+            <!-- BASIC BLOCKS -->
+            <div><p class="text-[10px] font-bold text-blue-600">🧩 BASIC</p>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="addBlock('h1')" class="p-2 bg-white/70 border rounded-xl flex items-center gap-1 text-sm"><span class="material-icons text-blue-600">title</span> Headline</button>
+                <button onclick="addBlock('p')" class="p-2 bg-white/70 border rounded-xl flex items-center gap-1 text-sm"><span class="material-icons text-blue-600">notes</span> Text</button>
+                <button onclick="addButtonBlock()" class="p-2 bg-white/70 border rounded-xl flex items-center gap-1 text-sm"><span class="material-icons text-blue-600">smart_button</span> Button</button>
+                <button onclick="addEmbedBlock()" class="p-2 bg-white/70 border rounded-xl flex items-center gap-1 text-sm"><span class="material-icons text-blue-600">code</span> Embed</button>
+            </div></div>
+
+            <!-- BACKGROUNDS -->
+            <div><p class="text-[10px] font-bold text-blue-600">🎨 BACKGROUNDS</p><div id="bgGrid" class="grid grid-cols-4 gap-2 mt-2"></div></div>
+
+            <!-- VIEW MODE -->
+            <div><p class="text-[10px] font-bold text-blue-600">📱 VIEW</p>
+            <div class="flex gap-2"><button id="mobilePreviewBtn" class="flex-1 py-2 rounded-xl bg-white/70 border text-sm">Mobile</button><button id="pcPreviewBtn" class="flex-1 py-2 rounded-xl bg-white/70 border text-sm">Desktop</button></div></div>
+            <button id="clearPageBtn" class="w-full py-2 rounded-xl bg-white/60 border border-red-200 text-red-600 text-sm">🗑️ Clear All Blocks</button>
+        </div>
+        <div class="p-5 border-t space-y-3">
+            <button onclick="downloadHTML()" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">📥 EXPORT .HTML</button>
+            <button onclick="openPublish()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">🔗 LIVE SHARE</button>
+        </div>
+        <div class="p-4 text-center border-t text-[10px] font-bold">✨ MUHAMMAD TAQI · ORBITCRAFT ✨</div>
+    </aside>
+    <!-- EDITOR CANVAS -->
+    <main class="main-editor flex-1" id="mainEditor">
+        <div id="canvas" style="background-image: url('https://picsum.photos/id/104/1920/1080'); background-size: cover;">
+            <div class="overlay"><div id="dropZone" class="w-full min-h-screen px-6 py-8"></div></div>
+        </div>
+    </main>
+</div>
+</div>
+
+<!-- SHARE MODAL -->
+<div id="publishModal" class="fixed inset-0 bg-black/60 backdrop-blur-xl z-[2000] items-center justify-center hidden"><div class="bg-white/95 p-8 rounded-3xl w-full max-w-md text-center"><h2 class="text-2xl font-black">Live Share Link</h2><input type="text" id="shareUrl" readonly class="w-full p-3 bg-gray-100 rounded-xl my-4"><button onclick="copyUrl()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">📋 COPY LINK</button><button onclick="closePublish()" class="text-gray-400 text-sm underline mt-5">Close</button></div></div>
+
+<script>
+    // ----- GLOBAL PERSISTENCE, PROJECTS, STATE -----
+    let projects = [];
+    let activeProjectId = null;
+    let isBuilderOpen = false;
+    let isUndoRedo = false;
+    let historyStack = [], historyIndex = -1;
+    const dropZone = document.getElementById('dropZone');
+    const canvasDiv = document.getElementById('canvas');
+    const homepageDiv = document.getElementById('homepage');
+    const builderDiv = document.getElementById('builderApp');
+
+    function saveProjectsToLocal() { localStorage.setItem('orbitcraft_projects', JSON.stringify(projects)); }
+    function saveActiveProjectId() { if(activeProjectId) localStorage.setItem('orbitcraft_activeId', activeProjectId); else localStorage.removeItem('orbitcraft_activeId'); }
+    function saveViewState() { localStorage.setItem('orbitcraft_view', isBuilderOpen ? 'builder' : 'home'); if(isBuilderOpen && activeProjectId) localStorage.setItem('orbitcraft_builderProject', activeProjectId); else localStorage.removeItem('orbitcraft_builderProject'); }
+    function loadProjects() { const stored = localStorage.getItem('orbitcraft_projects'); projects = stored ? JSON.parse(stored) : []; }
+    function getCurrentState() { return { html: dropZone.innerHTML, background: canvasDiv.style.backgroundImage }; }
+    function updateCurrentProject(updateTimestamp = true) { if(!activeProjectId) return; const idx = projects.findIndex(p => p.id === activeProjectId); if(idx !== -1) { const state = getCurrentState(); projects[idx].html = state.html; projects[idx].background = state.background; if(updateTimestamp) projects[idx].lastModified = Date.now(); saveProjectsToLocal(); renderHomepage(); } }
+    function saveToHistory() { if(isUndoRedo) return; const cur = dropZone.innerHTML; if(historyIndex < historyStack.length-1) historyStack = historyStack.slice(0, historyIndex+1); historyStack.push(cur); historyIndex = historyStack.length-1; if(historyStack.length>50) historyStack.shift(); updateUndoRedoButtons(); }
+    function undo() { if(historyIndex>0 && activeProjectId) { isUndoRedo=true; historyIndex--; dropZone.innerHTML=historyStack[historyIndex]; isUndoRedo=false; updateUndoRedoButtons(); updateCurrentProject(false); } }
+    function redo() { if(historyIndex<historyStack.length-1 && activeProjectId) { isUndoRedo=true; historyIndex++; dropZone.innerHTML=historyStack[historyIndex]; isUndoRedo=false; updateUndoRedoButtons(); updateCurrentProject(false); } }
+    function updateUndoRedoButtons() { const u=document.getElementById('undoBtn'), r=document.getElementById('redoBtn'); if(u) u.style.opacity = historyIndex<=0?'0.5':'1'; if(r) r.style.opacity = historyIndex>=historyStack.length-1?'0.5':'1'; }
+    let historyTimer; if(dropZone) new MutationObserver(() => { if(!isUndoRedo && activeProjectId && isBuilderOpen) { clearTimeout(historyTimer); historyTimer = setTimeout(() => { saveToHistory(); updateCurrentProject(false); }, 200); } }).observe(dropZone, { childList: true, subtree: true, attributes: true, characterData: true });
+
+    // ----- HOMEPAGE RENDER -----
+    function renderHomepage() {
+        const grid = document.getElementById('projectsGrid');
+        if(!grid) return;
+        if(projects.length === 0) {
+            grid.innerHTML = `<div class="col-span-full text-center py-20 bg-white/5 rounded-3xl"><span class="material-icons text-6xl text-gray-400">folder_open</span><p class="mt-4 text-gray-300">No websites yet. Click "New Website" to start.</p></div>`;
+            return;
+        }
+        grid.innerHTML = projects.slice().reverse().map(proj => `
+            <div class="project-card bg-white/10 backdrop-blur-sm border-white/20 text-white">
+                <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-xl">${escapeHtml(proj.name)}</h3>
+                        <p class="text-xs text-gray-300 mt-1">Last edit: ${new Date(proj.lastModified).toLocaleString()}</p>
+                    </div>
+                    <div class="flex gap-1">
+                        <button class="edit-project p-1 hover:bg-white/20 rounded-full" data-id="${proj.id}"><span class="material-icons text-sm">edit</span></button>
+                        <button class="delete-project p-1 hover:bg-red-500/30 rounded-full" data-id="${proj.id}"><span class="material-icons text-sm">delete</span></button>
+                    </div>
+                </div>
+                <div class="mt-4 flex gap-3">
+                    <button class="open-builder-btn bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded-full text-sm font-semibold flex items-center gap-1" data-id="${proj.id}"><span class="material-icons text-sm">design_services</span> Edit</button>
+                    <button class="rename-project-btn text-gray-300 hover:text-white text-sm underline" data-id="${proj.id}">Rename</button>
+                </div>
+            </div>
+        `).join('');
+        document.querySelectorAll('.open-builder-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = btn.getAttribute('data-id'); openBuilderWithProject(id); }));
+        document.querySelectorAll('.delete-project').forEach(btn => btn.addEventListener('click', (e) => { const id = btn.getAttribute('data-id'); deleteProjectFromHome(id); }));
+        document.querySelectorAll('.rename-project-btn').forEach(btn => btn.addEventListener('click', (e) => { const id = btn.getAttribute('data-id'); renameProjectFromHome(id); }));
+    }
+    function deleteProjectFromHome(id) { if(confirm('Delete this website forever?')) { projects = projects.filter(p => p.id !== id); if(activeProjectId === id) activeProjectId = null; saveProjectsToLocal(); renderHomepage(); if(projects.length===0 && isBuilderOpen) { closeBuilderAndGoHome(); } } }
+    function renameProjectFromHome(id) { const proj = projects.find(p => p.id === id); if(proj) { const newName = prompt('New site name:', proj.name); if(newName && newName.trim()) { proj.name = newName.trim(); saveProjectsToLocal(); renderHomepage(); if(activeProjectId === id && isBuilderOpen) { } } } }
+    function createNewProject() { let name = prompt('Website name:', `My Site ${projects.length+1}`); if(!name) return; const newId = Date.now() + '-' + Math.random().toString(36); const defaultHtml = `<div class="block"><div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><h1 contenteditable="true" class="text-6xl font-black text-center bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">${escapeHtml(name)}</h1><p contenteditable="true" class="text-xl text-center text-gray-700 mt-4">Start editing — click any text.</p></div>`;
+        projects.push({ id: newId, name: name, html: defaultHtml, background: "url('https://picsum.photos/id/104/1920/1080')", createdAt: Date.now(), lastModified: Date.now() });
+        saveProjectsToLocal(); renderHomepage(); openBuilderWithProject(newId); }
+    function openBuilderWithProject(projectId) { const project = projects.find(p => p.id === projectId); if(!project) return; activeProjectId = projectId; dropZone.innerHTML = project.html; canvasDiv.style.backgroundImage = project.background || "url('https://picsum.photos/id/104/1920/1080')"; saveToHistory(); updateUndoRedoButtons(); isBuilderOpen = true; homepageDiv.style.display = 'none'; builderDiv.style.display = 'flex'; saveViewState(); saveActiveProjectId(); }
+    function closeBuilderAndGoHome() { isBuilderOpen = false; activeProjectId = null; homepageDiv.style.display = 'block'; builderDiv.style.display = 'none'; saveViewState(); saveActiveProjectId(); renderHomepage(); }
+    function restoreFromSavedState() { loadProjects(); const savedView = localStorage.getItem('orbitcraft_view'); const savedProjectId = localStorage.getItem('orbitcraft_builderProject'); if(savedView === 'builder' && savedProjectId && projects.find(p => p.id === savedProjectId)) { openBuilderWithProject(savedProjectId); } else { homepageDiv.style.display = 'block'; builderDiv.style.display = 'none'; isBuilderOpen = false; renderHomepage(); if(projects.length===0) { const welcomeHtml = `<div class="block"><div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><h1 contenteditable="true" class="text-7xl font-black text-center">Welcome to OrbitCraft</h1><p contenteditable="true" class="text-xl text-center">Create your first project by clicking "New Website".</p></div>`; const defaultId = Date.now()+'-default'; projects.push({ id: defaultId, name: "My First Site", html: welcomeHtml, background: "url('https://picsum.photos/id/104/1920/1080')", createdAt: Date.now(), lastModified: Date.now() }); saveProjectsToLocal(); renderHomepage(); } } }
+
+    // ----- ENHANCED AI PARSER (supports : ; , multi-command, colors, actions, shortcuts) -----
+    const buttonShortcuts = { deepseek: "https://deepseek.com", chatgpt: "https://chatgpt.com", openai: "https://openai.com", google: "https://google.com", youtube: "https://youtube.com", facebook: "https://facebook.com", instagram: "https://instagram.com", twitter: "https://twitter.com", github: "https://github.com", claude: "https://claude.ai", gemini: "https://gemini.google.com" };
+    const colorMap = { white: "white", navy: "#1e3a8a", light: "#f1f5f9", gray: "#64748b", cream: "#fff9e6", mint: "#ccffcc", pink: "#fbcfe8", purple: "#a855f7", sunset: "#ff7e5e", ocean: "#2c7da0", green: "#22c55e" };
+    function resolveColor(input) { input = input.toLowerCase().trim(); if(colorMap[input]) return colorMap[input]; if(input.startsWith('#')) return input; return null; }
+    function setBackgroundFromAI(value) { let urlOrColor = value.trim(); if(urlOrColor.startsWith('image')) { let parts = urlOrColor.split('|'); let imgUrl = parts.length>1 ? parts[1].trim() : "https://picsum.photos/id/42/1920/1080"; canvasDiv.style.backgroundImage = `url('${imgUrl}')`; canvasDiv.style.backgroundSize = "cover"; } else { let color = resolveColor(urlOrColor); if(color) { canvasDiv.style.backgroundImage = "none"; canvasDiv.style.backgroundColor = color; } else if(urlOrColor.match(/^https?:\/\//)) { canvasDiv.style.backgroundImage = `url('${urlOrColor}')`; canvasDiv.style.backgroundSize = "cover"; } else { canvasDiv.style.backgroundImage = "none"; canvasDiv.style.backgroundColor = "#0f172a"; } } updateCurrentProject(); }
+    function addButtonFromAI(label, link) { let finalLink = buttonShortcuts[link.toLowerCase()] || link; if(!finalLink.match(/^https?:\/\//)) finalLink = "https://" + finalLink; addCustomButton(label, finalLink); }
+    function parseAndExecuteCommands(rawText) { const lines = rawText.split(/\r?\n/); let fullCommandText = ""; for(let line of lines) fullCommandText += line + "\n"; let allCommands = []; let temp = fullCommandText; let keywordRegex = /\b(title|heading|hero|text|paragraph|para|button|background|download|preview|live\s*url)\b/gi; let lastIndex = 0; let match; let splits = []; while((match = keywordRegex.exec(temp)) !== null) { if(match.index > lastIndex) splits.push(temp.substring(lastIndex, match.index).trim()); splits.push(match[0]); lastIndex = match.index + match[0].length; } if(lastIndex < temp.length) splits.push(temp.substring(lastIndex).trim()); let currentCommand = ""; for(let part of splits) { if(/(title|heading|hero|text|paragraph|para|button|background|download|preview|live\s*url)/i.test(part) && currentCommand.trim() !== "") { allCommands.push(currentCommand.trim()); currentCommand = part + " "; } else currentCommand += part + " "; } if(currentCommand.trim() !== "") allCommands.push(currentCommand.trim()); for(let cmd of allCommands) processSingleCommand(cmd); }
+    function processSingleCommand(cmd) { cmd = cmd.trim(); if(!cmd) return; let lower = cmd.toLowerCase(); if(lower.startsWith("download")) { downloadHTML(); return; } if(lower.startsWith("preview")) { openPublish(); return; } if(lower.startsWith("live url")) { openPublish(); return; } let sep = cmd.includes(":") ? ":" : ";"; let firstColon = cmd.indexOf(sep); if(firstColon === -1) return; let keyword = cmd.substring(0, firstColon).trim().toLowerCase(); let value = cmd.substring(firstColon+1).trim(); if(keyword === "title" || keyword === "heading" || keyword === "hero") { addBlock('h1', value); } else if(keyword === "text" || keyword === "paragraph" || keyword === "para") { addBlock('p', value); } else if(keyword === "button") { let label = "", link = ""; if(value.includes(";")) { let parts = value.split(";"); for(let i=0;i<parts.length;i++) { let p = parts[i].trim(); if(p.toLowerCase() === "name" && i+1<parts.length) label = parts[i+1].trim(); if(p.toLowerCase() === "link" && i+1<parts.length) link = parts[i+1].trim(); } } else if(value.includes("|")) { let parts = value.split("|"); label = parts[0].trim(); link = parts.length>1 ? parts[1].trim() : ""; } else { let words = value.split(/\s+/); if(words.length>=2 && buttonShortcuts[words[words.length-1].toLowerCase()]) { link = words.pop(); label = words.join(" "); } else { label = value; link = "https://example.com"; } } if(label && link) addButtonFromAI(label, link); } else if(keyword === "background") { setBackgroundFromAI(value); } }
+    async function processAIPrompt(promptText) { if(!promptText.trim()) return alert("Write AI commands"); parseAndExecuteCommands(promptText); setTimeout(()=>{const last=dropZone.lastElementChild; if(last) last.scrollIntoView({behavior:'smooth'})},100); updateCurrentProject(); }
+
+    // ----- BUILDER UI HELPERS -----
+    window.duplicateBlock = function(btn) { const original = btn.closest('.block'); if(original){ const clone = original.cloneNode(true); clone.querySelectorAll('[contenteditable]').forEach(el => el.setAttribute('contenteditable','true')); original.insertAdjacentElement('afterend', clone); clone.scrollIntoView({ behavior:'smooth' }); saveToHistory(); updateCurrentProject(); } };
+    window.deleteBlockWithHistory = function(btn) { btn.closest('.block')?.remove(); saveToHistory(); updateCurrentProject(); };
+    function addBlock(tag, text=null) { const div=document.createElement('div'); div.className="block"; let inner=`<div class="controls"><button onclick="duplicateBlock(this)" class="material-icons">content_copy</button><button onclick="deleteBlockWithHistory(this)" class="material-icons">delete</button></div>`; if(tag==='h1') inner+=`<h1 contenteditable="true" class="text-5xl font-extrabold text-center text-gray-800">${text||'New Headline'}</h1>`; else inner+=`<p contenteditable="true" class="text-lg text-gray-700 max-w-3xl mx-auto">${text||'Edit this text.'}</p>`; div.innerHTML=inner; dropZone.appendChild(div); div.scrollIntoView({behavior:'smooth'}); saveToHistory(); updateCurrentProject(); return div; }
+    function addCustomButton(label, url) { if(!label) return; let finalUrl = url || 'https://example.com'; if(!finalUrl.startsWith('http')) finalUrl='https://'+finalUrl; const div=document.createElement('div'); div.className="block text-center"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><a href="${finalUrl}" target="_blank" class="inline-block px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold shadow-xl hover:scale-105 transition">${escapeHtml(label)}</a>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); }
+    function addImageFromUrl(url) { if(!url) return; const div=document.createElement('div'); div.className="block"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="flex justify-center"><img src="${url}" class="rounded-2xl max-h-[500px] shadow-xl"></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); }
+    window.addButtonBlock = function() { const l=prompt("Button text:"); const u=prompt("Link URL:"); if(l) addCustomButton(l,u); };
+    window.addEmbedBlock = function() { const src=prompt("Embed URL:"); if(src){ const div=document.createElement('div'); div.className="block"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><iframe src="${src}" class="w-full h-[420px] rounded-2xl border-0"></iframe>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); } };
+    window.addHeroCard = function() { const div=document.createElement('div'); div.className="block text-center"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="bg-white/50 backdrop-blur rounded-3xl p-8"><span class="material-icons text-6xl text-blue-500">rocket_launch</span><h2 contenteditable="true" class="text-3xl font-bold mt-4">Launch Idea</h2><p contenteditable="true" class="text-gray-600">Build stunning websites.</p><button class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full">Learn More</button></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); };
+    window.addImageBlock = function() { const u=prompt("Image URL:"); if(u) addImageFromUrl(u); };
+    window.addTestimonial = function() { const div=document.createElement('div'); div.className="block text-center"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="bg-white/40 rounded-3xl p-8 italic"><span class="material-icons text-4xl text-blue-400">format_quote</span><p contenteditable="true" class="text-xl mt-2">"Amazing builder!"</p><p contenteditable="true" class="font-bold mt-4">— Client</p></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); };
+    window.addStatsRow = function() { const div=document.createElement('div'); div.className="block"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="grid grid-cols-3 gap-6 text-center"><div><div class="text-4xl font-black text-blue-600">100+</div><div contenteditable="true">Users</div></div><div><div class="text-4xl font-black text-blue-600">24/7</div><div contenteditable="true">Support</div></div><div><div class="text-4xl font-black text-blue-600">∞</div><div contenteditable="true">Ideas</div></div></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); };
+    window.downloadHTML = function() { const cloneZone = dropZone.cloneNode(true); cloneZone.querySelectorAll('.controls').forEach(c=>c.remove()); cloneZone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable')); const bg = canvasDiv.style.backgroundImage; const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><script src="https://cdn.tailwindcss.com"><\/script><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><style>.block{background:rgba(255,255,255,0.6);backdrop-filter:blur(12px);border-radius:2rem;padding:48px 10%;margin-bottom:20px;}</style></head><body style="background:${bg} fixed center/cover;font-family:sans-serif;"><div class="p-8">${cloneZone.innerHTML}</div></body></html>`; const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download='orbitcraft_site.html'; a.click(); URL.revokeObjectURL(a.href); };
+    function openPublish(){ const state=getCurrentState(); const encoded=btoa(unescape(encodeURIComponent(JSON.stringify({html:state.html,bg:state.background})))); document.getElementById('shareUrl').value=window.location.href.split('#')[0]+'#site='+encoded; document.getElementById('publishModal').style.display='flex'; }
+    window.closePublish=()=>document.getElementById('publishModal').style.display='none';
+    window.copyUrl=()=>{const input=document.getElementById('shareUrl'); input.select(); navigator.clipboard.writeText(input.value); alert('Link copied');};
+    function escapeHtml(str){ return str.replace(/[&<>]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+
+    // ----- EVENT LISTENERS -----
+    document.getElementById('globalSaveBtn')?.addEventListener('click', ()=>{ if(activeProjectId) updateCurrentProject(true); alert('✅ Project saved'); renderHomepage(); });
+    document.getElementById('backToHomeBtn')?.addEventListener('click', closeBuilderAndGoHome);
+    document.getElementById('homeNewProjectBtn')?.addEventListener('click', createNewProject);
+    document.getElementById('clearPageBtn')?.addEventListener('click', ()=>{ if(confirm('Clear all blocks?')){ dropZone.innerHTML=''; saveToHistory(); updateCurrentProject(); } });
+    document.getElementById('aiGenerateBtn')?.addEventListener('click', ()=>processAIPrompt(document.getElementById('aiPromptInput').value));
+    document.getElementById('undoBtn')?.addEventListener('click', undo);
+    document.getElementById('redoBtn')?.addEventListener('click', redo);
+    const mobileBtn=document.getElementById('mobilePreviewBtn'), pcBtn=document.getElementById('pcPreviewBtn'), mainEditor=document.getElementById('mainEditor');
+    if(mobileBtn&&pcBtn){ function setPreview(mode){ if(mode==='mobile'){ mainEditor.classList.add('preview-mobile'); mobileBtn.classList.add('bg-blue-600','text-white'); pcBtn.classList.remove('bg-blue-600','text-white'); } else { mainEditor.classList.remove('preview-mobile'); pcBtn.classList.add('bg-blue-600','text-white'); mobileBtn.classList.remove('bg-blue-600','text-white'); } } pcBtn.classList.add('bg-blue-600','text-white'); mobileBtn.onclick=()=>setPreview('mobile'); pcBtn.onclick=()=>setPreview('pc'); }
+    const bgList=["https://picsum.photos/id/11/1920/1080","https://picsum.photos/id/22/1920/1080","https://picsum.photos/id/34/1920/1080","https://picsum.photos/id/47/1920/1080","https://picsum.photos/id/58/1920/1080","https://picsum.photos/id/69/1920/1080","https://picsum.photos/id/76/1920/1080","https://picsum.photos/id/85/1920/1080"];
+    const bgGridDiv=document.getElementById('bgGrid'); if(bgGridDiv) bgList.forEach(url=>{ const t=document.createElement('div'); t.className="bg-thumb h-12 bg-cover rounded-xl cursor-pointer"; t.style.backgroundImage=`url('${url}')`; t.onclick=()=>{ canvasDiv.style.backgroundImage=`url('${url}')`; canvasDiv.style.backgroundSize="cover"; updateCurrentProject(); }; bgGridDiv.appendChild(t); });
+    restoreFromSavedState();
+    document.addEventListener('contextmenu', e=>e.preventDefault());
+    document.onkeydown = e => { if(e.ctrlKey && (e.keyCode===85||e.keyCode===83||e.keyCode===73)){ e.preventDefault(); return false; } if(e.key==='F12') e.preventDefault(); };
+</script>
+<script src="script.js"></script>
+</body>
+</html>
