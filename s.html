@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>OrbitCraft AI · Website Builder</title>
+    <!-- Tailwind + Google Fonts + Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0b1120; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .block { position: relative; width: 100%; padding: 48px 10%; margin-bottom: 24px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(12px); border-radius: 2rem; border: 1px solid rgba(59, 130, 246, 0.2); transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.2); box-shadow: 0 8px 20px -6px rgba(0,0,0,0.05); }
+        .block:hover { background: rgba(255, 255, 255, 0.85); border-color: #60a5fa; box-shadow: 0 20px 30px -12px rgba(59, 130, 246, 0.25); transform: translateY(-3px); }
+        .controls { display: none; position: absolute; right: 16px; top: 12px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border-radius: 48px; padding: 5px 14px; gap: 12px; z-index: 120; border: 0.5px solid rgba(255,255,255,0.25); box-shadow: 0 8px 18px rgba(0,0,0,0.15); }
+        .block:hover .controls { display: flex; }
+        .controls button { background: transparent; border: none; color: #e2e8f0; cursor: pointer; font-size: 18px; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; transition: 0.15s; }
+        .controls button:hover { background: rgba(59, 130, 246, 0.6); transform: scale(1.05); color: white; }
+        .overlay { background: rgba(248, 250, 252, 0.5); backdrop-filter: blur(2px); min-height: 100%; width: 100%; padding: 2rem 0; }
+        .glass-sidebar { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px); border-right: 1px solid rgba(59, 130, 246, 0.2); box-shadow: 8px 0 28px -12px rgba(0,0,0,0.08); }
+        .main-editor.preview-mobile { flex: none; max-width: 420px; width: 100%; margin: 28px auto; border-radius: 48px; box-shadow: 0 30px 40px -18px rgba(0,0,0,0.4), 0 0 0 8px #f8fafc, 0 0 0 12px #93c5fd; background: #ffffff; transition: all 0.35s ease; }
+        .main-editor:not(.preview-mobile) { flex: 1; max-width: none; margin: 0; border-radius: 0; }
+        .bg-thumb { transition: all 0.2s ease; border-radius: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border: 2px solid transparent; }
+        .bg-thumb:hover { transform: scale(1.07) translateY(-3px); box-shadow: 0 15px 25px -8px #3b82f6; border-color: #60a5fa !important; }
+        [contenteditable="true"]:focus { outline: none; background: rgba(59, 130, 246, 0.08); border-radius: 24px; padding: 0.2rem 1rem; box-shadow: inset 0 0 0 2px #3b82f6; }
+        .btn-glow { transition: all 0.2s; }
+        .btn-glow:hover { transform: translateY(-2px); filter: brightness(1.02); box-shadow: 0 12px 20px -12px #3b82f6; }
+        .project-item { background: white; border-radius: 1rem; padding: 10px 12px; margin-bottom: 8px; transition: all 0.15s; border: 1px solid #e2e8f0; }
+        .project-item:hover { background: #f1f5f9; transform: translateX(3px); border-color: #3b82f6; }
+        .landing-bg { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); }
+        .number-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-height: 400px; overflow-y: auto; padding: 16px; background: rgba(255,255,240,0.4); border-radius: 28px; }
+        .number-item { background: white; padding: 6px 12px; border-radius: 40px; font-family: monospace; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<!-- LANDING PAGE (entrance) -->
+<div id="landingPage" class="fixed inset-0 z-[1000] landing-bg flex items-center justify-center flex-col text-white p-6">
+    <div class="text-center max-w-2xl animate-fade-in-up">
+        <div class="text-7xl mb-6">✨</div>
+        <h1 class="text-5xl md:text-7xl font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">OrbitCraft AI</h1>
+        <p class="text-xl md:text-2xl mt-4 text-gray-300">Web Builder · Created & Owned by <span class="font-bold text-white">Muhammad Taqi</span></p>
+        <p class="text-gray-400 mt-2">Design, save, edit & export like a pro</p>
+        <button id="startCreatingBtn" class="mt-10 px-10 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full text-lg font-bold shadow-2xl hover:scale-105 transition-all flex items-center gap-3 mx-auto">🚀 Start Creating <span class="material-icons text-2xl">arrow_forward</span></button>
+        <p class="text-xs text-gray-400 mt-8">Save unlimited websites · Auto-save on refresh · Delete / manage projects</p>
+    </div>
+</div>
+
+<!-- MAIN BUILDER APP (hidden initially) -->
+<div id="appWrapper" style="display: none;">
+<div class="flex min-h-screen">
+    <!-- LEFT SIDEBAR -->
+    <aside class="glass-sidebar w-[320px] flex-shrink-0 flex flex-col h-screen sticky top-0 overflow-y-auto z-50">
+        <div class="p-6 border-b border-blue-200/50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-2 shadow-lg">
+                    <span class="material-icons text-white text-2xl">auto_awesome</span>
+                </div>
+                <span class="text-2xl font-black bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">OrbitCraft</span>
+            </div>
+            <button id="globalSaveBtn" class="bg-green-600 hover:bg-green-700 text-white text-xs px-3 py-1.5 rounded-full font-bold flex items-center gap-1 shadow"><span class="material-icons text-sm">save</span> Save</button>
+        </div>
+        <div class="p-5 flex-1 overflow-y-auto space-y-6">
+            <div class="flex gap-3">
+                <button id="undoBtn" class="flex-1 py-2 rounded-xl bg-white/80 border border-gray-200 text-gray-700 text-sm font-semibold flex items-center justify-center gap-1 transition hover:bg-gray-50"><span class="material-icons text-base">undo</span> Undo</button>
+                <button id="redoBtn" class="flex-1 py-2 rounded-xl bg-white/80 border border-gray-200 text-gray-700 text-sm font-semibold flex items-center justify-center gap-1 transition hover:bg-gray-50"><span class="material-icons text-base">redo</span> Redo</button>
+                <button id="newProjectBtn" class="flex-1 py-2 rounded-xl bg-indigo-50 text-indigo-700 text-sm font-semibold flex items-center justify-center gap-1"><span class="material-icons text-sm">add</span> New</button>
+            </div>
+
+            <!-- SAVED WEBSITES (Google Sites like list) -->
+            <div class="border-t border-blue-200/40 pt-3">
+                <div class="flex justify-between items-center">
+                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider flex items-center gap-1.5"><span class="material-icons text-sm">folder</span> MY SITES</p>
+                    <button id="refreshProjectsBtn" class="text-blue-500 text-xs"><span class="material-icons text-sm">refresh</span></button>
+                </div>
+                <div id="projectsListContainer" class="max-h-64 overflow-y-auto mt-2 space-y-2 pr-1"></div>
+                <p class="text-[10px] text-gray-400 mt-2 italic">Click any site to load & edit</p>
+            </div>
+
+            <!-- AI BLOCK -->
+            <div class="border-t border-blue-200/40 pt-4">
+                <p class="text-[10px] font-bold text-purple-600 uppercase tracking-wider flex items-center gap-1.5"><span class="material-icons text-sm">psychology</span> AI BUILDER</p>
+                <div class="mt-3 bg-gradient-to-r from-purple-50/70 to-indigo-50/70 rounded-2xl p-3 border border-purple-200/60">
+                    <textarea id="aiPromptInput" rows="3" class="w-full p-3 rounded-xl bg-white/90 border border-purple-200 text-sm focus:ring-2 focus:ring-purple-400" placeholder="💬 write title: My Awesome Page&#10;write paragraph: Hello&#10;button name: Click link: https://deepseek.com"></textarea>
+                    <button id="aiGenerateBtn" class="w-full mt-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md">⚡ GENERATE</button>
+                </div>
+            </div>
+            <!-- COMPONENT LIBRARY -->
+            <div>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-3">📦 COMPONENTS</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="addHeroCard()" class="component-card p-2 bg-white/60 rounded-xl border border-blue-100 text-left text-xs font-medium">🚀 Hero Card</button>
+                    <button onclick="addImageBlock()" class="component-card p-2 bg-white/60 rounded-xl border border-blue-100 text-left text-xs font-medium">🖼️ Image + Text</button>
+                    <button onclick="addTestimonial()" class="component-card p-2 bg-white/60 rounded-xl border border-blue-100 text-left text-xs font-medium">💬 Testimonial</button>
+                    <button onclick="addStatsRow()" class="component-card p-2 bg-white/60 rounded-xl border border-blue-100 text-left text-xs font-medium">📊 Stats Row</button>
+                </div>
+            </div>
+            <!-- BASIC BLOCKS -->
+            <div>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-3">🧩 BASIC BLOCKS</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="addBlock('h1')" class="p-3 bg-white/70 border border-blue-200 rounded-2xl flex flex-col items-center gap-1"><span class="material-icons text-blue-600">title</span><span class="text-xs">Headline</span></button>
+                    <button onclick="addBlock('p')" class="p-3 bg-white/70 border border-blue-200 rounded-2xl flex flex-col items-center gap-1"><span class="material-icons text-blue-600">notes</span><span class="text-xs">Text</span></button>
+                    <button onclick="addButtonBlock()" class="p-3 bg-white/70 border border-blue-200 rounded-2xl flex flex-col items-center gap-1"><span class="material-icons text-blue-600">smart_button</span><span class="text-xs">Button</span></button>
+                    <button onclick="addEmbedBlock()" class="p-3 bg-white/70 border border-blue-200 rounded-2xl flex flex-col items-center gap-1"><span class="material-icons text-blue-600">code</span><span class="text-xs">Embed</span></button>
+                </div>
+            </div>
+            <!-- BACKGROUND GALLERY -->
+            <div>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-3">🎨 BACKGROUNDS</p>
+                <div id="bgGrid" class="grid grid-cols-4 gap-2.5"></div>
+            </div>
+            <!-- PREVIEW MODE -->
+            <div>
+                <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-2">📱 VIEW MODE</p>
+                <div class="flex gap-3">
+                    <button id="mobilePreviewBtn" class="flex-1 py-2.5 rounded-xl bg-white/70 border text-sm">📱 Mobile</button>
+                    <button id="pcPreviewBtn" class="flex-1 py-2.5 rounded-xl bg-white/70 border text-sm">💻 Desktop</button>
+                </div>
+            </div>
+            <button id="clearPageBtn" class="w-full py-2.5 rounded-xl bg-white/60 border border-red-200 text-red-600 text-sm">🗑️ Clear All Blocks</button>
+        </div>
+        <div class="p-5 bg-white/40 border-t space-y-3">
+            <button onclick="downloadHTML()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">📥 EXPORT .HTML</button>
+            <button onclick="openPublish()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">🔗 LIVE SHARE</button>
+        </div>
+        <div class="p-4 text-center border-t bg-white/30"><p class="text-[10px] font-mono font-bold">✨ MUHAMMAD TAQI · ORBITCRAFT ✨</p></div>
+    </aside>
+    <!-- MAIN EDITOR -->
+    <main class="main-editor flex-1" id="mainEditor">
+        <div id="canvas" style="background-image: url('https://picsum.photos/id/104/1920/1080'); background-size: cover; background-position: center;">
+            <div class="overlay"><div id="dropZone" class="w-full min-h-screen px-6 py-8">
+                <!-- default content loaded from project or default -->
+            </div></div>
+        </div>
+    </main>
+</div>
+</div>
+
+<!-- MODAL for publish/share -->
+<div id="publishModal" class="fixed inset-0 bg-black/60 backdrop-blur-xl z-[2000] items-center justify-center hidden"><div class="bg-white/95 p-8 rounded-3xl w-full max-w-md text-center"><h2 class="text-2xl font-black">Live Share Link</h2><input type="text" id="shareUrl" readonly class="w-full p-3 bg-gray-100 rounded-xl my-4"><button onclick="copyUrl()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold">📋 COPY LINK</button><button onclick="closePublish()" class="text-gray-400 text-sm underline mt-5 block">Close</button></div></div>
+
+<script>
+    // ---------- PROJECT MANAGER (localStorage) ----------
+    let projects = [];
+    let activeProjectId = null;
+    let isUndoRedo = false;
+    let historyStack = [], historyIndex = -1;
+    const dropZone = document.getElementById('dropZone');
+    const canvasDiv = document.getElementById('canvas');
+
+    function saveProjectsToLocal() { localStorage.setItem('orbitcraft_projects', JSON.stringify(projects)); localStorage.setItem('orbitcraft_activeId', activeProjectId || ''); }
+    function loadProjectsFromLocal() { const stored = localStorage.getItem('orbitcraft_projects'); if(stored) projects = JSON.parse(stored); else projects = []; const activeId = localStorage.getItem('orbitcraft_activeId'); activeProjectId = activeId || null; }
+    
+    function getCurrentState() { return { html: dropZone.innerHTML, background: canvasDiv.style.backgroundImage }; }
+    function updateCurrentProject(updateTimestamp = true) { if(!activeProjectId) return; const index = projects.findIndex(p => p.id === activeProjectId); if(index !== -1) { const state = getCurrentState(); projects[index].html = state.html; projects[index].background = state.background; if(updateTimestamp) projects[index].lastModified = Date.now(); saveProjectsToLocal(); renderProjectsList(); } }
+    function saveCurrentAsNewProject(projectName) { const state = getCurrentState(); const newId = Date.now() + '-' + Math.random().toString(36); const newProject = { id: newId, name: projectName || `Site ${projects.length+1}`, html: state.html, background: state.background, createdAt: Date.now(), lastModified: Date.now() }; projects.push(newProject); activeProjectId = newId; saveProjectsToLocal(); renderProjectsList(); }
+    function loadProjectById(projectId) { const project = projects.find(p => p.id === projectId); if(!project) return; activeProjectId = project.id; dropZone.innerHTML = project.html; canvasDiv.style.backgroundImage = project.background || "url('https://picsum.photos/id/104/1920/1080')"; saveToHistory(); updateUndoRedoButtons(); renderProjectsList(); saveProjectsToLocal(); }
+    function deleteProject(projectId, event) { if(event) event.stopPropagation(); const project = projects.find(p => p.id === projectId); if(!project) return; if(confirm(`Delete "${project.name}" permanently?`)) { projects = projects.filter(p => p.id !== projectId); if(activeProjectId === projectId) { if(projects.length > 0) loadProjectById(projects[0].id); else { dropZone.innerHTML = ''; canvasDiv.style.backgroundImage = "url('https://picsum.photos/id/104/1920/1080')"; activeProjectId = null; saveToHistory(); } } saveProjectsToLocal(); renderProjectsList(); } }
+    function renameProject(projectId) { const project = projects.find(p => p.id === projectId); if(!project) return; const newName = prompt("Enter new site name:", project.name); if(newName && newName.trim()) { project.name = newName.trim(); saveProjectsToLocal(); renderProjectsList(); } }
+    function renderProjectsList() { const container = document.getElementById('projectsListContainer'); if(!container) return; container.innerHTML = ''; if(projects.length === 0) { container.innerHTML = '<div class="text-xs text-gray-400 p-2 text-center">✨ No saved sites yet. Click SAVE</div>'; return; } projects.slice().reverse().forEach(proj => { const div = document.createElement('div'); div.className = `project-item cursor-pointer ${activeProjectId === proj.id ? 'ring-2 ring-blue-400 bg-blue-50' : ''}`; div.innerHTML = `<div class="flex justify-between items-center"><div class="flex-1 truncate" title="${proj.name}"><span class="font-semibold text-sm">${escapeHtml(proj.name)}</span><span class="text-[9px] text-gray-400 block">${new Date(proj.lastModified).toLocaleString()}</span></div><div class="flex gap-1"><button class="rename-project text-gray-500 hover:text-blue-600 text-xs px-1" data-id="${proj.id}"><span class="material-icons text-sm">edit</span></button><button class="delete-project text-gray-500 hover:text-red-600 text-xs px-1" data-id="${proj.id}"><span class="material-icons text-sm">delete</span></button></div></div>`; div.addEventListener('click', (e) => { if(e.target.closest('.delete-project') || e.target.closest('.rename-project')) return; loadProjectById(proj.id); }); div.querySelector('.rename-project')?.addEventListener('click', (e) => { e.stopPropagation(); renameProject(proj.id); }); div.querySelector('.delete-project')?.addEventListener('click', (e) => { e.stopPropagation(); deleteProject(proj.id, e); }); container.appendChild(div); }); }
+
+    // Undo/Redo core
+    function saveToHistory() { if (isUndoRedo) return; const current = dropZone.innerHTML; if (historyIndex < historyStack.length - 1) historyStack = historyStack.slice(0, historyIndex + 1); historyStack.push(current); historyIndex = historyStack.length - 1; if(historyStack.length > 50) historyStack.shift(); updateUndoRedoButtons(); }
+    function undo() { if (historyIndex > 0) { isUndoRedo = true; historyIndex--; dropZone.innerHTML = historyStack[historyIndex]; isUndoRedo = false; updateUndoRedoButtons(); if(activeProjectId) updateCurrentProject(false); } }
+    function redo() { if (historyIndex < historyStack.length - 1) { isUndoRedo = true; historyIndex++; dropZone.innerHTML = historyStack[historyIndex]; isUndoRedo = false; updateUndoRedoButtons(); if(activeProjectId) updateCurrentProject(false); } }
+    function updateUndoRedoButtons() { const u = document.getElementById('undoBtn'); const r = document.getElementById('redoBtn'); if(u) u.style.opacity = historyIndex <= 0 ? '0.5' : '1'; if(r) r.style.opacity = historyIndex >= historyStack.length - 1 ? '0.5' : '1'; }
+    let historyTimer; new MutationObserver(() => { if (!isUndoRedo && activeProjectId) { clearTimeout(historyTimer); historyTimer = setTimeout(() => { saveToHistory(); updateCurrentProject(false); }, 200); } else if(!isUndoRedo) saveToHistory(); }).observe(dropZone, { childList: true, subtree: true, attributes: true, characterData: true });
+
+    // Helper functions
+    window.duplicateBlock = function(btn) { const original = btn.closest('.block'); if (!original) return; const clone = original.cloneNode(true); clone.querySelectorAll('[contenteditable]').forEach(el => el.setAttribute('contenteditable', 'true')); original.insertAdjacentElement('afterend', clone); clone.scrollIntoView({ behavior: 'smooth', block: 'center' }); saveToHistory(); updateCurrentProject(); };
+    window.deleteBlockWithHistory = function(btn) { btn.closest('.block')?.remove(); saveToHistory(); updateCurrentProject(); };
+    function addBlock(tag, customText = null) { const div = document.createElement('div'); div.className = "block"; let inner = `<div class="controls"><button onclick="duplicateBlock(this)" class="material-icons">content_copy</button><button onclick="deleteBlockWithHistory(this)" class="material-icons">delete</button></div>`; if (tag === 'h1') inner += `<h1 contenteditable="true" class="text-5xl md:text-6xl font-extrabold outline-none text-center text-gray-800">${customText || '✨ New headline'}</h1>`; else inner += `<p contenteditable="true" class="text-lg text-gray-700 outline-none max-w-3xl mx-auto">${customText || 'Edit this text.'}</p>`; div.innerHTML = inner; dropZone.appendChild(div); div.scrollIntoView({ behavior: 'smooth', block: 'center' }); saveToHistory(); updateCurrentProject(); return div; }
+    function addCustomButton(label, url) { if (!label) return; let finalUrl = url || 'https://example.com'; if (!finalUrl.startsWith('http')) finalUrl = 'https://' + finalUrl; const div = document.createElement('div'); div.className = "block text-center"; div.innerHTML = `<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><a href="${finalUrl}" target="_blank" class="inline-block px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold shadow-xl hover:scale-105 transition-all">${escapeHtml(label)}</a>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); }
+    function addImageFromUrl(url) { if (!url) return; const div = document.createElement('div'); div.className = "block"; div.innerHTML = `<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="flex justify-center"><img src="${url}" class="rounded-2xl max-h-[500px] shadow-xl"></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); }
+    function setBackgroundImage(url) { canvasDiv.style.backgroundImage = `url('${url}')`; canvasDiv.style.backgroundSize = "cover"; updateCurrentProject(); }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    window.addButtonBlock = function() { const l = prompt("Button text:"); const u = prompt("Link URL:"); if(l) addCustomButton(l, u); };
+    window.addEmbedBlock = function() { const src = prompt("Embed URL:"); if(src){ const div = document.createElement('div'); div.className = "block"; div.innerHTML = `<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><iframe src="${src}" class="w-full h-[420px] rounded-2xl border-0"></iframe>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); } };
+    window.addHeroCard = function() { const div = document.createElement('div'); div.className = "block text-center"; div.innerHTML = `<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="bg-white/50 backdrop-blur rounded-3xl p-8"><span class="material-icons text-6xl text-blue-500">rocket_launch</span><h2 contenteditable="true" class="text-3xl font-bold mt-4">Launch Idea</h2><p contenteditable="true" class="text-gray-600">Build stunning websites</p><button class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full">Learn More</button></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); };
+    window.addImageBlock = function() { const u = prompt("Image URL:"); if(u) addImageFromUrl(u); };
+    window.addTestimonial = function() { const div = document.createElement('div'); div.className = "block text-center"; div.innerHTML = `<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="bg-white/40 rounded-3xl p-8 italic"><span class="material-icons text-4xl text-blue-400">format_quote</span><p contenteditable="true" class="text-xl mt-2">"Amazing builder!"</p><p contenteditable="true" class="font-bold mt-4">— Client</p></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); };
+    window.addStatsRow = function() { const div = document.createElement('div'); div.className = "block"; div.innerHTML = `<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="grid grid-cols-3 gap-6 text-center"><div><div class="text-4xl font-black text-blue-600">100+</div><div contenteditable="true">Users</div></div><div><div class="text-4xl font-black text-blue-600">24/7</div><div contenteditable="true">Support</div></div><div><div class="text-4xl font-black text-blue-600">∞</div><div contenteditable="true">Ideas</div></div></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); };
+
+    // AI Parsing (shortened but functional)
+    async function processAIPrompt(promptText) { if(!promptText.trim()) return alert("Write command"); let actions=0; const lines=promptText.split(/\r?\n/); const regex=/^(?:write|create|add)\s+(title|paragraph|hero|image|button|background)\s*[:;]\s*(.+)$/i; for(let line of lines){ line=line.trim(); if(!line) continue; const m=line.match(regex); if(m){ const type=m[1].toLowerCase(), content=m[2].trim(); if(type==='title') addBlock('h1',content); else if(type==='paragraph') addBlock('p',content); else if(type==='hero') addHeroSection(content); else if(type==='image') addImageFromUrl(content); else if(type==='button'){ let label=content,url=""; const split=content.match(/(.+?)\s+(?:link|url)[:\s]+(.+)/i); if(split){label=split[1].trim(); url=split[2].trim();} else if(content.includes("http")){let parts=content.split(/\s+/); url=parts.pop(); label=parts.join(" ");} addCustomButton(label,url);} else if(type==='background') setBackgroundImage(content); actions++; continue; } } if(actions===0) alert("Use: write title: something"); else setTimeout(()=>{const last=dropZone.lastElementChild; if(last) last.scrollIntoView({behavior:'smooth'})},100); }
+    function addHeroSection(text){ const div=document.createElement('div'); div.className="block text-center"; div.innerHTML=`<div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><div class="bg-gradient-to-br from-blue-100/70 to-indigo-100/70 rounded-3xl p-10"><h1 contenteditable="true" class="text-5xl font-black">${text||'Hero'}</h1><p contenteditable="true" class="text-xl mt-3">Amazing</p><button class="mt-6 px-8 py-3 bg-blue-600 text-white rounded-full">Start</button></div>`; dropZone.appendChild(div); saveToHistory(); updateCurrentProject(); return div; }
+
+    // Initialization and landing
+    function initBuilder() { loadProjectsFromLocal(); if(projects.length===0){ const defaultHtml = `<div class="block"><div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><h1 contenteditable="true" class="text-7xl font-black text-center bg-gradient-to-r from-blue-900 to-indigo-800 bg-clip-text text-transparent">Orbit<span class="text-blue-500">.</span>Craft</h1><p contenteditable="true" class="text-xl text-center text-gray-700 mt-3">AI website builder with projects</p></div>`; const newId = Date.now()+'-default'; projects.push({ id:newId, name:"My First Site", html:defaultHtml, background:"url('https://picsum.photos/id/104/1920/1080')", createdAt:Date.now(), lastModified:Date.now() }); activeProjectId=newId; saveProjectsToLocal(); } else { activeProjectId = localStorage.getItem('orbitcraft_activeId'); if(!activeProjectId || !projects.find(p=>p.id===activeProjectId)) activeProjectId=projects[0].id; } const activeProj = projects.find(p=>p.id===activeProjectId); if(activeProj){ dropZone.innerHTML=activeProj.html; canvasDiv.style.backgroundImage=activeProj.background || "url('https://picsum.photos/id/104/1920/1080')"; } saveToHistory(); renderProjectsList(); }
+    window.downloadHTML = function() { const cloneZone = dropZone.cloneNode(true); cloneZone.querySelectorAll('.controls').forEach(ctrl=>ctrl.remove()); cloneZone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable')); const bg = canvasDiv.style.backgroundImage; const html = `<!DOCTYPE html>...<body><div class="viewer-overlay">${cloneZone.innerHTML}</div></body>`; const blob=new Blob([`<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><script src="https://cdn.tailwindcss.com"><\/script><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><style>.block{background:rgba(255,255,255,0.6);backdrop-filter:blur(12px);border-radius:2rem;padding:48px 10%;margin-bottom:20px;}</style></head><body style="background:${bg} fixed center/cover;font-family:sans-serif;"><div class="p-8">${cloneZone.innerHTML}</div></body></html>`], {type:'text/html'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='orbitcraft_site.html'; a.click(); URL.revokeObjectURL(a.href); };
+    function openPublish(){ const state=getCurrentState(); const encoded=btoa(unescape(encodeURIComponent(JSON.stringify({html:state.html,bg:state.background})))); document.getElementById('shareUrl').value=window.location.href.split('#')[0]+'#site='+encoded; document.getElementById('publishModal').style.display='flex'; }
+    window.closePublish=()=>document.getElementById('publishModal').style.display='none';
+    window.copyUrl=()=>{const input=document.getElementById('shareUrl'); input.select(); navigator.clipboard.writeText(input.value); alert('Link copied');};
+
+    // Global save button (top right)
+    document.getElementById('globalSaveBtn')?.addEventListener('click',()=>{ if(activeProjectId) updateCurrentProject(true); else { let name=prompt("Enter site name:","My Website"); if(name) saveCurrentAsNewProject(name); } alert("✅ Project saved!"); renderProjectsList(); });
+    document.getElementById('newProjectBtn')?.addEventListener('click',()=>{ let name=prompt("New site name:","Untitled"); if(name){ const newId=Date.now()+'-new'; const emptyHtml='<div class="block"><div class="controls"><button onclick="duplicateBlock(this)">copy</button><button onclick="deleteBlockWithHistory(this)">delete</button></div><p contenteditable="true" class="text-xl text-center">New canvas — start designing</p></div>'; projects.push({id:newId,name:name,html:emptyHtml,background:"url('https://picsum.photos/id/104/1920/1080')",createdAt:Date.now(),lastModified:Date.now()}); activeProjectId=newId; loadProjectById(newId); alert(`"${name}" created`); } });
+    document.getElementById('clearPageBtn')?.addEventListener('click',()=>{if(confirm('Clear all blocks?')){dropZone.innerHTML=''; saveToHistory(); updateCurrentProject();}});
+    document.getElementById('aiGenerateBtn')?.addEventListener('click',()=>processAIPrompt(document.getElementById('aiPromptInput').value));
+    document.getElementById('undoBtn')?.addEventListener('click',undo); document.getElementById('redoBtn')?.addEventListener('click',redo);
+    const mobileBtn=document.getElementById('mobilePreviewBtn'), pcBtn=document.getElementById('pcPreviewBtn'), mainEditor=document.getElementById('mainEditor'); if(mobileBtn&&pcBtn){ function setPreviewMode(mode){ if(mode==='mobile'){ mainEditor.classList.add('preview-mobile'); mobileBtn.classList.add('bg-blue-600','text-white'); pcBtn.classList.remove('bg-blue-600','text-white'); } else { mainEditor.classList.remove('preview-mobile'); pcBtn.classList.add('bg-blue-600','text-white'); mobileBtn.classList.remove('bg-blue-600','text-white'); } } pcBtn.classList.add('bg-blue-600','text-white'); mobileBtn.onclick=()=>setPreviewMode('mobile'); pcBtn.onclick=()=>setPreviewMode('pc'); }
+    // Background gallery
+    const bgImgs=["https://picsum.photos/id/11/1920/1080","https://picsum.photos/id/22/1920/1080","https://picsum.photos/id/34/1920/1080","https://picsum.photos/id/47/1920/1080","https://picsum.photos/id/58/1920/1080","https://picsum.photos/id/69/1920/1080","https://picsum.photos/id/76/1920/1080","https://picsum.photos/id/85/1920/1080"]; const bgGridDiv=document.getElementById('bgGrid'); bgImgs.forEach(url=>{ const t=document.createElement('div'); t.className="bg-thumb h-12 bg-cover rounded-xl cursor-pointer border-2 border-transparent"; t.style.backgroundImage=`url('${url}')`; t.onclick=()=>{ canvasDiv.style.backgroundImage=`url('${url}')`; canvasDiv.style.backgroundSize="cover"; updateCurrentProject(); }; bgGridDiv.appendChild(t); });
+    // Landing + builder visibility
+    document.getElementById('startCreatingBtn')?.addEventListener('click',()=>{ document.getElementById('landingPage').style.display='none'; document.getElementById('appWrapper').style.display='block'; initBuilder(); });
+    if(window.location.hash.includes('#site=')){ try{ const raw=window.location.hash.split('#site=')[1]; const data=JSON.parse(decodeURIComponent(escape(atob(raw)))); dropZone.innerHTML=data.html; canvasDiv.style.backgroundImage=data.bg; saveToHistory(); }catch(e){} }
+    // Anti-theft shortcuts and right click
+    document.addEventListener('contextmenu', e=>e.preventDefault());
+    document.onkeydown=e=>{ if(e.ctrlKey && (e.keyCode===85||e.keyCode===83||e.keyCode===73)){ e.preventDefault(); return false; } if(e.key==='F12') e.preventDefault(); };
+</script>
+<script src="script.js"></script>
+</body>
+</html>
