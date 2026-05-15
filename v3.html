@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MT WEB BUILDER | Next-Gen Development</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide-icons/0.321.0/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --bg-deep: #020617;
+            --accent-gold: #fbbf24;
+            --accent-gold-glow: rgba(251, 191, 36, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(30, 58, 138, 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(120, 53, 15, 0.15) 0%, transparent 40%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Animated Background Elements */
+        .glow-sphere {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: var(--accent-gold-glow);
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-20%, -20%); }
+            100% { transform: translate(20%, 20%); }
+        }
+
+        /* Container */
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--accent-gold), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3));
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Button Stack */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .main-btn {
+            position: relative;
+            text-decoration: none;
+            padding: 1.2rem 2.5rem;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05));
+            color: var(--accent-gold);
+            border-color: rgba(251, 191, 36, 0.3);
+        }
+
+        .btn-ai:hover {
+            background: var(--accent-gold);
+            color: var(--bg-deep);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--accent-gold-glow);
+        }
+
+        .btn-builder {
+            background: var(--glass-bg);
+            color: white;
+        }
+
+        .btn-builder:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--text-dim);
+        }
+
+        /* Footer */
+        footer {
+            position: absolute;
+            bottom: 2rem;
+            text-align: center;
+        }
+
+        .owner-tag {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .owner-name {
+            display: block;
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .btn-group {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-sphere"></div>
+
+    <div class="container">
+        <h1>MT WEB BUILDER</h1>
+        <p class="subtitle">Architecting the Digital Future</p>
+
+        <div class="btn-group">
+            <a href="https://muhammadtaqi512q-oss.github.io/M-BOX/MT" class="main-btn btn-ai">
+                <i data-lucide="sparkles"></i>
+                MAKE WEBSITE WITH MT AI
+            </a>
+            
+            <a href="https://muhammadtaqi512q-oss.github.io/M-BOX/v2" class="main-btn btn-builder">
+                <i data-lucide="layout"></i>
+                WEBSITE BUILDER V2
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <span class="owner-tag">Official Platform</span>
+        <span class="owner-name">CREATED AND OWNED BY MUHAMMAD TAQI</span>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
